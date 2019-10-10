@@ -18,9 +18,9 @@ With the use of social media API, students will be able to request personal acco
 The primary language used is Python for LED control/API access.
 
 ## Getting Started
-To start, clone the repository with the command below
-Note: git is required for the following steps
-Linux:
+To start, clone the repository with the command below  
+Note: git is required for the following steps  
+Linux:  
 ```
 git clone https://github.com/aserGarcia/RPi-Projects
 ```
