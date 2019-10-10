@@ -7,7 +7,7 @@ This repository contains the highly documented version of the 2019 Raspberry Pi 
 ## Description
 With the use of social media API, students will be able to request personal account data and display it on an OLED screen. Artwork is etched on plexiglass and illuminated with RGB LEDs. The behaviour of these LEDs is left to the stuents' desires.
 
-(Insert Picture here)
+(Insert Pictures here)
 
 ## Learning Objectives
 - Product Design
