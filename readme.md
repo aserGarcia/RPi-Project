@@ -1,6 +1,8 @@
 # RaspberryPi Project (Silicon STEM Academy)
 ## Plexi Glass LED with OLED Display for Social Media
 
+![Silicon STEM Logo](/images/logo.png "SSA Logo")
+
 Last Updated: Fall 2019
 This repository contains the highly documented version of the 2019 Raspberry Pi Project for Silicon STEM Academy.
 
