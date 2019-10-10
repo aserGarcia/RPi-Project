@@ -1,17 +1,24 @@
-#youtube gives the queries in json files
-import json
-
-#for text extraction (regular expressions)
-import re
-
-#making requests to urls
-import urllib.requests
+#importing youtube data api libraries
+#documentation at: https://youtube-data-api.readthedocs.io/en/latest/index.html
+from youtube_api import YouTubeDataAPI
 
 #So YouTube knows who is requesting (to throttle your requests)
+#It is important to not disclose your apiKey or else anyone can make requests on your behalf
 api_key = "AIzaSyAGMq4k-PIhEsocN40SBovIk3TK8-USIMk"
 
-#get request for the youtube data api
-base_url = "https://www.googleapis.com/youtube/v3"
-data_request = "/subscriptions?part=snippet&mySubscribers=true"
-request = base_url+data_request
+#Initialize an object of class YouTubeDataAPI to
+#access api functionality
 
+#The API key is the argument, if you do not have one it will throw an error
+yt = YouTubeDataAPI(api_key)
+
+#the channel id is unique to every channel, we need it for getting data later
+pew_channel_id = yt.get_channel_id_from_user('PewDiePie')
+
+#request channel data
+channel_data = yt.get_channel_metadata(pew_channel_id)
+
+
+#printing out the data (first is dictionary, second is sub count)
+print(channel_data)
+print(channel_data['subscription_count'])
