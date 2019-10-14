@@ -4,7 +4,7 @@ from youtube_api import YouTubeDataAPI
 
 #So YouTube knows who is requesting (to throttle your requests)
 #It is important to not disclose your apiKey or else anyone can make requests on your behalf
-api_key = "AIzaSyAGMq4k-PIhEsocN40SBovIk3TK8-USIMk"
+api_key = ""
 
 #Initialize an object of class YouTubeDataAPI to
 #access api functionality
