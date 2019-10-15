@@ -3,9 +3,18 @@ This script is to be loaded on a Pi Zero and run to configure for VNC
 (Virtual Network Computing) with Chromebooks.  
 
 ## NOTE
-Make sure Pi and Chromebook are on the same network and the network allows ssh connections.
+Make sure Pi and Chromebook are on the same network and the network allows ssh connections. (I would stay away from Guest network)  
 
-## Steps on Raspberry Pi  
+## Steps for Auto Setup on Raspberry Pi
+* Download script auto_setup_pi.sh
+* Run with command below
+```
+$ - sudo sh auto_setup_pi.sh
+```
+* Enter deafult password: raspberry
+* Follow prompted instructions
+
+## Steps for Manual Setup on Raspberry Pi  
 * Update System
 ```
 $ - sudo apt-get update && apt-get upgrade
@@ -33,3 +42,5 @@ $ - ifconfig wlan0
 * Search "VNC Viewer for Chromebook" in browser
 * Download the app in the Chrome Store
 * Open the app
+* Type the Pi IP address and connect
+* default username: pi, password: raspberry
