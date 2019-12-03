@@ -10,6 +10,9 @@ from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 import time
 
+#for LED
+import neopixel
+
 
 class SubCount:
 
@@ -34,7 +37,7 @@ class SubCount:
 			self.font = ImageFont.truetype(font_file_path)
 		
 		#trying social medial credentials
-		try credentials['Twitter']:
+		try:
 			self.twAPI_KEY, self.twAPI_SECRET, self.twACCESS_TOKEN, self.twACCESS_SECRET = credentials_dict['Twitter']
 			self.twitter = Twython(self.twAPI_KEY, self.twAPI_SECRET,
 								 self.twACCESS_TOKEN, self.twACCESS_SECRET)
@@ -42,7 +45,7 @@ class SubCount:
 			print('Error Twitter Credentials...')
 			pass
 
-		try credentials['YouTube']:
+		try:
 			self.youtube = YouTubeDataAPI(credentials_dict['YouTube'])
 		except KeyError:
 			print('Error YouTube Credentials...')
@@ -52,7 +55,7 @@ class SubCount:
 		i2c = board.I2C()
 		#define reset pin
 		oled_reset = digitalio.DigitalInOut(board.D4)
-		oled = adafruit_ssd1306.SSD1306_I2C(self.IMAGE_DIMENSIONS[0], self.IMAGE_DIMENSIONS[1], i2c, addr=0x3c, reset=oled_reset)
+		self.oled = adafruit_ssd1306.SSD1306_I2C(self.IMAGE_DIMENSIONS[0], self.IMAGE_DIMENSIONS[1], i2c, addr=0x3c, reset=oled_reset)
 
 	def update_account_dict(self, account_dict):
 		'''
@@ -83,7 +86,7 @@ class SubCount:
 
 		if account != None:
 			self.account_dict['Twitter'] = account
-		response = twitter.show_user(screen_name=self.account_dict['Twitter'])
+		response = self.twitter.show_user(screen_name=self.account_dict['Twitter'])
 		return response["followers_count"]
 
 	def get_youtube_subscribers(self, account=None):
@@ -121,19 +124,22 @@ class SubCount:
 			print('need to data to display...')
 			return None
 
-		image = Image.new('1', (oled.width, oled.height))
+		image = Image.new('1', (self.oled.width, self.oled.height))
 		draw = ImageDraw.Draw(image)		
 		x = 0
 		top = -2
 		spacing_increment = 15
-		youtube_sub = self.account_dict['YouTube']+' YouTube: '+data['YouTube']
-		twitter_sub = self.account_dict['Twitter']+' Twitter: '+data['Twitter']
-		instagram_sub = self.account_dict['Instagram']+' Insta: '+data['Instagram']
+		youtube_sub = 'pwdie Yt: '+str(data['YouTube'])
+		twitter_sub = 'RDJ Twtr: '+str(data['Twitter'])
+		instagram_sub = 'nasa Insta: '+str(data['Instagram'])
 
 		draw.text((x,top), youtube_sub, font=self.font, fill=255)
 		draw.text((x, top+spacing_increment), twitter_sub, font=self.font, fill=255)
 		spacing = spacing_increment*2
 		draw.text((x, top+spacing), instagram_sub, font=self.font, fill=255)
+		print('showing image')
+		self.oled.image(image)
+		self.oled.show()
 
 	def display_images(self):
 		oled.fill(0)
@@ -145,8 +151,10 @@ class SubCount:
 			oled.show()
 			time.sleep(0.5)
 
-	def display_LED(self, ):
+	def display_LED(self):
 		pixels = neopixel.NeoPixel(board.D18, 8)
+		for i in range(8):
+			pixels[i] = (0,255,255)
 
 
 if __name__ == '__main__':
@@ -162,19 +170,24 @@ if __name__ == '__main__':
 		YouTube,API_CREDENTIALS
 		Twitter,API_KEY,API_SECRET,ACCESS_TOKEN,ACCESS_SECRET
 	'''
-	with open("credentials_file.txt", "r") as file:
+	'''
+	with open("credentials.txt", "r") as file:
 		for line in file:
 			#split on first comma
 			information = line.split(',',1)
 			credentials_dict[information[0]] = tuple(information[1].split(','))
 
+	'''
+	credentials_dict={'YouTube':'AIzaSyAGMq4k-PIhEsocN40SBovIk3TK8-USIMk',
+			'Twitter':('Q75S5L18cSE19kMy3ouyQ7RcM','vS2kvcKUeo61Xo0w85tVwlb9nAW14G603mqAdRDyxJ0qPhjhRS',
+				'1183051881200775168-0KPXoGfP8bfFdnlwZSRbMAfFGmQ6g0','NHfoIUYg94yjOpmlm82zDmxTVZjnWt4rb4JSo0pgJDDgC')}
+	#print(credentials_dict)
 	pi_sub = SubCount(account_dict, credentials_dict, images)
 
 	data = pi_sub.get_data()
 	pi_sub.display_data(data)
-	pi_sub.display_images(images)
-	
-
+	#pi_sub.display_images(images)
+	pi_sub.display_LED()
 
 
 
